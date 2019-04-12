@@ -1,0 +1,20 @@
+#code used to find newly created accounts, but only names, to be pasted into multilock. Polish version
+
+regex = re.compile(r"\bużytkownika(.*?)dyskusja\b")
+reg_file = open('Full_API_query.txt', 'r+')
+API_query = reg_file.read()
+str_regex_result = regex.findall(API_query)
+str_regex_result = str(str_regex_result)
+
+# formating
+
+list_of_accounts = str_regex_result.replace('\', ', '\n')
+list_of_accounts = list_of_accounts.replace('\'', '')
+list_of_accounts = list_of_accounts.replace('[', '')
+list_of_accounts = list_of_accounts.replace(']', '')
+reg_file.close()
+after = open('List_of_accs.txt', 'w')
+after.write(str(list_of_accounts))
+after.close()
+print ("very OK")
+
