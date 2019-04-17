@@ -1,0 +1,19 @@
+#-*- coding: utf-8 -*-
+import json
+import re
+
+regexReason = re.compile(".*(s|S)pam.*")
+regexTime = re.compile("infinity")
+after = open('List_of_accs.txt', 'w')
+
+with open('Full_API_query.txt') as json_file:  
+    data = json.load(json_file)
+    for p in data['blocks']:
+        if regexReason.match(p['reason']) and regexTime.match(p['expiry']):
+            print('User: ' + p['user'])
+            print('')
+            after.write(p['user'] +"\n")
+
+after.close()
+print ("very OK")
+
