@@ -1,0 +1,38 @@
+#-*- coding: utf-8 -*-
+import json
+import re
+import requests
+import webbrowser
+
+#Full_API_query: https://www.mediawiki.org/w/api.php?action=query&list=logevents&leaction=newusers/create&leprop=user%7Ctimestamp&lelimit=500//
+
+regexReason = re.compile(".*(s|S)pam.*")
+regexTime = re.compile("infinity")
+after = open('List_of_accs.txt', 'w')
+
+def urlGenerator():
+    lang = raw_input("Provide language code: ")
+    domain = raw_input("\nProvide domaing: ")
+    limit = raw_input("\nProvide limit: ")
+    url = "https://" + lang + "." + domain + ".org/w/api.php?action=query&format=json&list=blocks&bklimit=" + str(limit)
+
+    return url
+
+url = urlGenerator()
+r = requests.get(url)
+r.text
+
+final_url = "https://meta.wikimedia.org/wiki/Special:MultiLock?wpTarget="
+data = json.loads(r.text)
+for p in data['query']['blocks']:
+    if regexReason.match(p['reason']) and regexTime.match(p['expiry']):
+        print('User: ' + p['user'])
+        print('')
+        after.write(p['user'] +"\n")
+        final_url += p['user'] + '%0A'
+
+webbrowser.open(final_url, new=2) 
+after.close()
+print final_url
+print ("very OK")
+
