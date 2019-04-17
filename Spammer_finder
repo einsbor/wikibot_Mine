@@ -1,4 +1,6 @@
 #-*- coding: utf-8 -*-
+#used to find accounts already blocked for spamming in a file with api query.
+
 import json
 import re
 
